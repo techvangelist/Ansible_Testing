@@ -1,0 +1,24 @@
+<header class="page-header">
+    <h1>Ansible Demo Run Complete!</h1>
+    <h2>Ansible Node: {{ ansible_nodename }}</h2>
+</header>
+
+<main>
+    <p>This completes the demo run of <em>Ansible Tower</em>! I hope you liked it!
+    <em>Goodbye!!</em></p>
+</main>
+
+<html>
+    <body>
+        <pre>
+        FQDN: {{ ansible_fqdn }} 
+        IP Address: {{ ansible_default_ipv4.address }}        
+        Distribution: {{ ansible_distribution }} {{ ansible_distribution_release }} {{ ansible_distribution_version }}
+        Kernel: {{ ansible_kernel }} 
+        Python Version: {{ ansible_python_version }}
+        CPUs: {{ ansible_processor_vcpus }}
+        Memory: {{ ansible_memtotal_mb }} MB  
+        Virtualization: {{ ansible_virtualization_type }}
+        </pre>
+   </body>
+</html>

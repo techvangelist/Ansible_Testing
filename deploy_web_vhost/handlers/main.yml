@@ -1,0 +1,7 @@
+---
+# handlers file for deploy_web_vhost
+
+- name: restart httpd
+  service:
+    name: httpd
+    state: restarted

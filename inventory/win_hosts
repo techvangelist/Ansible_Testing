@@ -1,0 +1,9 @@
+[win_hosts]
+abe_win10
+win2k19-guest1
+
+[win_hosts:vars]
+ansible_user=vagrant
+ansible_password=password
+ansible_connection=winrm
+ansible_winrm_server_cert_validation=ignore

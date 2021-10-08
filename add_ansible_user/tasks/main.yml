@@ -1,0 +1,41 @@
+---
+- name: Ensure ansible run groups exists
+  group:
+    name: "{{ item }}"
+    state: present
+  loop: "{{ grp_names }}"
+
+- name: Ensure ansible users are ansible users are present and in the correct groups
+  user:
+    name: "{{ item.user_name }}"
+    comment: "{{ item.user_comment }}"
+    groups: "{{ item.grps_to_add }}"
+    password: "{{ item.userpw }}"
+    append: yes
+    shell: /bin/bash
+    state: present
+  loop: "{{ users }}"
+
+- name: Set ssh keys
+  authorized_key:
+    user: "{{ item.user_name }}"
+    state: present
+    key: "{{ item.key_src }}"
+  loop: "{{ users }}"
+
+- name: Add group and priviledges to ansible sudoers file
+  lineinfile:
+    path: /etc/sudoers.d/ansible_privileges
+    line: "{{ item }}"
+    state: present
+    mode: 0440
+    create: yes
+    validate: 'visudo -cf %s'
+  loop: "{{ grp_privs }}"
+
+- name: Ensure includedir is set in sudoers
+  lineinfile:
+    dest: /etc/sudoers
+    line: "#includedir /etc/sudoers.d"
+    state: present
+    validate: "/usr/sbin/visudo -cf %s"

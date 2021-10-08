@@ -1,0 +1,53 @@
+---
+# tasks file for deploy_web_vhost
+
+- name: Ensure web user is present
+  user:
+    name: "{{ username }}"
+    password: "{{ 'password' | password_hash('sha512') }}"
+    state: present
+    update_password: on_create
+
+- name: Ensure httpd is installed
+  yum:
+    name: httpd
+    state: latest
+ 
+- name: Ensure firewall is open for http
+  firewalld:
+    service: http
+    immediate: true
+    permanent: true
+    state: enabled
+ 
+- name: Ensure root directory is present
+  file:
+    path: "{{ item }}"
+    state: directory
+  loop:
+    - "/var/www/html"
+    - "/var/www/vhosts/{{ inventory_hostname }}"
+
+- name: index.html file is installed
+  template:
+    src: index.j2
+    dest: "/var/www/vhosts/{{ inventory_hostname }}/index.html"
+    owner: root
+    group: root
+    mode: 0644
+
+- name: Ensure httpd is started and enabled
+  service:
+    name: httpd
+    state: started
+    enabled: true
+
+- name: vhost file is installed
+  template:
+    src: vhost.conf.j2
+    dest: /etc/httpd/conf.d/vhost.conf
+    owner: root
+    group: root
+    mode: 0644
+  notify:
+    - restart httpd

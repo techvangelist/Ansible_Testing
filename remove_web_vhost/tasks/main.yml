@@ -1,0 +1,33 @@
+---
+# tasks file for remove_web_vhost
+
+- name: Ensure httpd is stopped and disabled
+  service:
+    name: httpd
+    state: stopped
+    enabled: false
+  ignore_errors: yes
+
+- name: Ensure httpd is uninstalled
+  yum:
+    name: httpd
+    state: absent
+
+- name: Ensure http service is removed from firewall
+  firewalld:
+    service: http
+    permanent: true
+    state: disabled
+
+- name: Ensure web user is removed
+  user:
+    name: "{{ username }}"
+    state: absent
+
+- name: Ensure root and vhost directories are removed
+  file:
+    path: "{{ item }}"
+    state: absent
+  loop:
+    - "/var/www"
+    - "/etc/httpd"
