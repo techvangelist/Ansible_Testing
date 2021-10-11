@@ -1,0 +1,9 @@
+---
+- name: Run the facts_check role
+  hosts: avenger
+  gather_facts: false
+  become: true
+
+  roles:
+  - role: facts_check
+    state: present

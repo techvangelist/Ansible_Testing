@@ -1,0 +1,4 @@
+CURRENT DATE and TIME: {{ curr_date_time.stdout }}
+FACTS LIST FOR {{ ansible_hostname }}
+
+{{ sys_facts | to_nice_json }}

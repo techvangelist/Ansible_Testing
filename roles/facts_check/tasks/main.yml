@@ -1,0 +1,21 @@
+---
+# facts_check role
+- name: Read System Facts
+  ansible.builtin.setup:
+  register: sys_facts
+
+- name: Check System Date and Time
+  ansible.builtin.shell: "date '+%Y-%m-%d %H:%M:%S'"
+  register: curr_date_time
+
+- name: Display System Facts
+  ansible.builtin.debug:
+    var: sys_facts
+    verbosity: 1
+
+- name: Template a file that lists the systems facts
+  ansible.builtin.template:
+    src: facts_list.j2
+    dest: facts_list.txt
+    owner: asnell
+    mode: '0644'
