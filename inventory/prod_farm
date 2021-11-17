@@ -1,0 +1,6 @@
+[dev-svrs]
+rhel8-lab01.techv.lan
+
+[prod-svrs]
+cent8-lab02.techv.lan
+rhel8-lab02.techv.lan
